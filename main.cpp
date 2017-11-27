@@ -15,6 +15,7 @@ int main(void) {
   bool stA=false,stB=false;
   // ------ Event loop ------ //
   while (1) {
+    PORTB = 0b00000000;
     if (bit_is_clear(PIND, PD2)&&(!stA)) {            /* look for button press */
       stA=!stA;
       PORTB = 0b00000001;
