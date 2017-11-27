@@ -18,11 +18,13 @@ int main(void) {
   // ------ Event loop ------ //
   while (1) {
     PORTB = 0b00000000;
-    if (bit_is_clear(PIND, PD2)&&(!sparkA)) {            /* look for button press */
-      sparkA=!sparkA;
-      _delay_ms(SPARKDELAY);
-      PORTB = 0b00000001;
-      _delay_ms(SPARKTIME);
+    if (bit_is_clear(PIND, PD2)) {            /* look for button press */
+      //Timer ON
+       _delay_ms(SPARKDELAY);      
+         while {bit_is_clear(PIND, PD2) {
+            PORTB = 0b00000001;
+            }
+      //Timer OFF
       continue;
     }
     if(bit_is_clear(PIND, PD3)&&(!sparkB)){
