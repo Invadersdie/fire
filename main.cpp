@@ -28,8 +28,8 @@ int main(void) {
       _delay_ms(DELAYTIME);
       continue;
     }
-    stA=!stA;
-    stB=!stB;
+    stA=false;
+    stB=false;
   }                                                  /* End event loop */
   return 0;
 }
