@@ -22,7 +22,7 @@ int main(void) {
       _delay_ms(DELAYTIME);
       continue;
     }
-    if(bit_is_clear(PIND, PD2)&&(!stB)){
+    if(bit_is_clear(PIND, PD3)&&(!stB)){
       stB=!stB;
       PORTB = 0b00000010;
       _delay_ms(DELAYTIME);
