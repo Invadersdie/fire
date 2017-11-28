@@ -63,24 +63,24 @@ int main(void) {
 			continue;
 		}
 		
-		if (forDelay > 0x0775) {sparkDelay = angle + 0x22; break; };
-		if (forDelay > 0x0598) {sparkDelay = angle + 0x14; break; };
-		if (forDelay > 0x0459) {sparkDelay = angle + 0x0E; break; };
-		if (forDelay > 0x03BA) {sparkDelay = angle + 0x0A; break; };
-		if (forDelay > 0x0332) {sparkDelay = angle + 0x08; break; };
-		if (forDelay > 0x02CC) {sparkDelay = angle + 0x05; break; };
-		if (forDelay > 0x027C) {sparkDelay = angle + 0x04; break; };
-		if (forDelay > 0x023C) {sparkDelay = angle + 0x04; break; };
-		if (forDelay > 0x0208) {sparkDelay = angle + 0x03; break; };
-		if (forDelay > 0x01DD) {sparkDelay = angle + 0x02; break; };
-		if (forDelay > 0x01B8) {sparkDelay = angle + 0x03; break; };
-		if (forDelay > 0x0199) {sparkDelay = angle + 0x01; break; };
-		if (forDelay > 0x017D) {sparkDelay = angle + 0x02; break; };
-		if (forDelay > 0x0165) {sparkDelay = angle + 0x01; break; };
-		if (forDelay > 0x0150) {sparkDelay = angle + 0x02; break; };
-		if (forDelay > 0x013E) {sparkDelay = angle + 0x01; break; };
-		if (forDelay > 0x012D) {sparkDelay = angle + 0x01; break; };
-		if (forDelay > 0x011E) {sparkDelay = angle; break; };
+		if      (forDelay > 0x0775) {sparkDelay = angle + 0x22;};
+		else if (forDelay > 0x0598) {sparkDelay = angle + 0x14;};
+		else if (forDelay > 0x0459) {sparkDelay = angle + 0x0E;};
+		else if (forDelay > 0x03BA) {sparkDelay = angle + 0x0A;};
+		else if (forDelay > 0x0332) {sparkDelay = angle + 0x08;};
+		else if (forDelay > 0x02CC) {sparkDelay = angle + 0x05;};
+		else if (forDelay > 0x027C) {sparkDelay = angle + 0x04;};
+		else if (forDelay > 0x023C) {sparkDelay = angle + 0x04;};
+		else if (forDelay > 0x0208) {sparkDelay = angle + 0x03;};
+		else if (forDelay > 0x01DD) {sparkDelay = angle + 0x02;};
+		else if (forDelay > 0x01B8) {sparkDelay = angle + 0x03;};
+		else if (forDelay > 0x0199) {sparkDelay = angle + 0x01;};
+		else if (forDelay > 0x017D) {sparkDelay = angle + 0x02;};
+		else if (forDelay > 0x0165) {sparkDelay = angle + 0x01;};
+		else if (forDelay > 0x0150) {sparkDelay = angle + 0x02;};
+		else if (forDelay > 0x013E) {sparkDelay = angle + 0x01;};
+		else if (forDelay > 0x012D) {sparkDelay = angle + 0x01;};
+		else if (forDelay > 0x011E) {sparkDelay = angle;};
 		
 		sparkDelay = angle; //default value
 		angle = angle1;
