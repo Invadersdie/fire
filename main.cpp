@@ -31,7 +31,7 @@ void _delay_us_my (int delay) {
 		_delay_us(1);
 	}
 }
-void count(){
+void countFreq(int timer){
 	int freqEng = TCNT2;
 	TCNT2 = 0;
 }
@@ -41,35 +41,31 @@ int main(void) {
 	
 	bool temp;
 	int forDelay;
-	int loops=0;
 	
 	PORTD |= (1 << 3)|(1 << 2);
 	DDRB = 0b00000011;
 	
 	timer_init();
 	adc0_init();
-	int angle = newAngle();     // #TODO POTENCIOMETR FOR *ANGLE*
+	int angle = newAngle();     
 	int sparkDelay = 0;
 	
 	while (1) {
 		
 		if (PIND2) {
-			loops++;
 			temp = false;
-			TCNT1 = 0;   //#Timer ON
+            
+            countFreq();
+			TCNT1 = 0;  
+            
 			_delay_us_my(angle);
 			_delay_us_my(sparkDelay);
+            
 			PORTB = 0b00000010;
 			while (PIND2) {
-				if(!temp){
-					angle = newAngle();
-					if (loops == 10) {
-						count();
-						loops = 0;
-						};
-					temp=true;
-				};
+                if(!temp){angle = newAngle();temp=true;};
 			}
+            
 			forDelay = TCNT1;
 		}
 		
