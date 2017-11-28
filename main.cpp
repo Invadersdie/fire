@@ -30,8 +30,8 @@ void _delay_us_my (int delay) {
 }
 
 int main(void) {
+	
 	bool temp;
-	int angle1;
 	double forDelay;
 	
 	PORTD |= (1 << 3)|(1 << 2);
@@ -51,7 +51,7 @@ int main(void) {
 			_delay_us_my(sparkDelay);
 			PORTB = 0b00000010;
 			while (PIND2) {
-				if(!temp){angle1 = newAngle();temp=true;};
+				if(!temp){angle = newAngle();temp=true;};
 			}
 			forDelay = TCNT1;
 		}
@@ -68,7 +68,7 @@ int main(void) {
 			forDelay = TCNT1;
 		}
 		
-		if      (forDelay > 0x0775) {sparkDelay = 204;}
+		if			(forDelay > 0x0775) {sparkDelay = 204;}
 			else if (forDelay > 0x0598) {sparkDelay = 120;}
 			else if (forDelay > 0x0459) {sparkDelay = 84;}
 			else if (forDelay > 0x03BA) {sparkDelay = 60;}
