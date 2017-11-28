@@ -20,7 +20,7 @@ void adc0_init()
 int newAngle()
 {
 	ADCSRA |= 0x40;
-	int data = ADCW*0.1;
+	int data = (int)(ADCW/4);
 	return data;
 }
 
@@ -59,7 +59,6 @@ int main(void) {
 			while (PIND3) {
 				if(!temp){angle1 = newAngle();temp=true;};
 			}
-			
 			forDelay = TCNT1-angle;
 			continue;
 		}
@@ -81,9 +80,9 @@ int main(void) {
 		else if (forDelay > 0x0150) {sparkDelay = angle + 4;}
 		else if (forDelay > 0x013E) {sparkDelay = angle + 2;}
 		else if (forDelay > 0x012D) {sparkDelay = angle + 1;}
-		else if (forDelay > 0x011E) {sparkDelay = angle;};
+		else if (forDelay > 0x011E) {sparkDelay = angle;}
+		else sparkDelay = angle; //default value
 		
-		sparkDelay = angle; //default value
 		angle = angle1;
 		}                                                  /* End event loop */
 		
