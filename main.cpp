@@ -16,19 +16,23 @@ void adc0_init()
 	// http://samou4ka.net/page/analogo-cifrovoj-preobrazovatel-mk-atmega8
 	ADMUX=0; //#PORT
 	ADCSRA=0x86; //0b10000110
+
 }
-int newAngle()
-{
+int newAngle() {
 	ADCSRA |= 0x40;
 	int data = (int)(ADCW/4);
 	return data;
+}
+void _delay_us_my (int delay){
+	for (int i = 0; i<delay; i++){
+		_delay_us(1);
+	}
 }
 
 int main(void) {
 	bool temp;
 	int angle1;
 	double forDelay;
-	int tempData; 
 	
 	PORTD |= (1 << 3)|(1 << 2);
 	DDRB = 0b00000011;
@@ -43,18 +47,19 @@ int main(void) {
 		if (PIND2) {
 			temp = false;
 			TCNT1 = 0;   //#Timer ON
-			_delay_us(sparkDelay);
+			_delay_us_my(sparkDelay);
 			PORTB = 0b00000010;
 			while (PIND2) {
 				if(!temp){angle1 = newAngle();temp=true;};
 			}
-			forDelay = tempData-angle;
+			forDelay = -angle;
 			continue;
 		}
+		
 		if (PIND3) {
 			temp = false;
 			TCNT1 = 0; //#Timer ON
-			_delay_us(sparkDelay);
+			_delay_us_my(sparkDelay);
 			PORTB = 0b00000001;
 			while (PIND3) {
 				if(!temp){angle1 = newAngle();temp=true;};
