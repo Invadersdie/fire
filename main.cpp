@@ -20,8 +20,8 @@ void adc0_init()
 double newAngle()
 {
 	ADCSRA |= 0x40;
-	data = ADCW;
-	return //#TODO
+	data = ADCW*0.05859375;
+	return data;
 }
 
 int main(void) {
@@ -33,7 +33,7 @@ int main(void) {
 	PORTD |= (1 << 3)|(1 << 2);
 	DDRB = 0b00000011;
 	
-	timer1_init();
+	timer1_init(); 
 	adc0_init();
 	double angle = newAngle();     // #TODO POTENCIOMETR FOR *ANGLE*
 	double sparkDelay = angle;
