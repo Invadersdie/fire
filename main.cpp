@@ -22,10 +22,8 @@ int newAngle() {
 	return data;
 }
 void _delay_us_my (int delay) {
-	if (delay != 0){
-		for (int i = 0; i<delay; i++){
-			_delay_us(1);
-		}
+	for (int i = 0; i<delay; i++){
+		_delay_us(1);
 	}
 }
 
