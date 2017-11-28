@@ -22,9 +22,9 @@ int newAngle() {
 	return data;
 }
 void _delay_us_my (int delay) {
-	for (int i = 0; i<delay; i++){
-		_delay_us(1);
-	}
+		for (int i = 0; i<delay; i++){
+			_delay_us(1);
+		}
 }
 
 int main(void) {
@@ -38,14 +38,14 @@ int main(void) {
 	timer1_init();
 	adc0_init();
 	int angle = newAngle();     // #TODO POTENCIOMETR FOR *ANGLE*
-	int sparkDelay = angle;
+	int sparkDelay = 0;
 	
 	while (1) {
 		
 		if (PIND2) {
 			temp = false;
-			_delay_us_my(angle);
 			TCNT1 = 0;   //#Timer ON
+            _delay_us_my(angle);
 			_delay_us_my(sparkDelay);
 			PORTB = 0b00000010;
 			while (PIND2) {
@@ -56,8 +56,8 @@ int main(void) {
 		
 		if (PIND3) {
 			temp = false;
-			_delay_us_my(angle);
 			TCNT1 = 0; //#Timer ON
+            _delay_us_my(angle);
 			_delay_us_my(sparkDelay);
 			PORTB = 0b00000001;
 			while (PIND3) {
