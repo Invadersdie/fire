@@ -24,8 +24,10 @@ int newAngle() {
 	return data;
 }
 void _delay_us_my (int delay){
-	for (int i = 0; i<delay; i++){
-		_delay_us(1);
+	if (delay != 0){
+		for (int i = 0; i<delay; i++){
+			_delay_us(1);
+		}
 	}
 }
 
@@ -46,6 +48,7 @@ int main(void) {
 		
 		if (PIND2) {
 			temp = false;
+			_delay_us_my(angle);
 			TCNT1 = 0;   //#Timer ON
 			_delay_us_my(sparkDelay);
 			PORTB = 0b00000010;
@@ -58,37 +61,37 @@ int main(void) {
 		
 		if (PIND3) {
 			temp = false;
+			_delay_us_my(angle);
 			TCNT1 = 0; //#Timer ON
 			_delay_us_my(sparkDelay);
 			PORTB = 0b00000001;
 			while (PIND3) {
-				if(!temp){angle1 = newAngle();temp=true;};
+				if(!temp){angle = newAngle();temp=true;};
 			}
-			forDelay = TCNT1-angle;
+			forDelay = TCNT1;
 			continue;
 		}
 		
-		if      (forDelay > 0x0775) {sparkDelay = angle + 204;}
-		else if (forDelay > 0x0598) {sparkDelay = angle + 120;}
-		else if (forDelay > 0x0459) {sparkDelay = angle + 84;}
-		else if (forDelay > 0x03BA) {sparkDelay = angle + 60;}
-		else if (forDelay > 0x0332) {sparkDelay = angle + 48;}
-		else if (forDelay > 0x02CC) {sparkDelay = angle + 30;}
-		else if (forDelay > 0x027C) {sparkDelay = angle + 24;}
-		else if (forDelay > 0x023C) {sparkDelay = angle + 24;}
-		else if (forDelay > 0x0208) {sparkDelay = angle + 18;}
-		else if (forDelay > 0x01DD) {sparkDelay = angle + 12;}
-		else if (forDelay > 0x01B8) {sparkDelay = angle + 11;}
-		else if (forDelay > 0x0199) {sparkDelay = angle + 10;}
-		else if (forDelay > 0x017D) {sparkDelay = angle + 8;}
-		else if (forDelay > 0x0165) {sparkDelay = angle + 6;}
-		else if (forDelay > 0x0150) {sparkDelay = angle + 4;}
-		else if (forDelay > 0x013E) {sparkDelay = angle + 2;}
-		else if (forDelay > 0x012D) {sparkDelay = angle + 1;}
-		else if (forDelay > 0x011E) {sparkDelay = angle;}
-		else sparkDelay = angle; //default value
+		if      (forDelay > 0x0775) {sparkDelay = 204;}
+		else if (forDelay > 0x0598) {sparkDelay = 120;}
+		else if (forDelay > 0x0459) {sparkDelay = 84;}
+		else if (forDelay > 0x03BA) {sparkDelay = 60;}
+		else if (forDelay > 0x0332) {sparkDelay = 48;}
+		else if (forDelay > 0x02CC) {sparkDelay = 30;}
+		else if (forDelay > 0x027C) {sparkDelay = 24;}
+		else if (forDelay > 0x023C) {sparkDelay = 24;}
+		else if (forDelay > 0x0208) {sparkDelay = 18;}
+		else if (forDelay > 0x01DD) {sparkDelay = 12;}
+		else if (forDelay > 0x01B8) {sparkDelay = 11;}
+		else if (forDelay > 0x0199) {sparkDelay = 10;}
+		else if (forDelay > 0x017D) {sparkDelay = 8;}
+		else if (forDelay > 0x0165) {sparkDelay = 6;}
+		else if (forDelay > 0x0150) {sparkDelay = 4;}
+		else if (forDelay > 0x013E) {sparkDelay = 2;}
+		else if (forDelay > 0x012D) {sparkDelay = 1;}
+		else if (forDelay > 0x011E) {sparkDelay = 0;}
+		else sparkDelay = 0; //default value
 		
-		angle = angle1;
 		}                                                  /* End event loop */
 		
 		return 0;
