@@ -26,22 +26,21 @@ int newAngle() {
 	int data = (int)(ADCW/4);
 	return data;
 }
-void _delay_us_my (int delay) {
+void _delay_ms_my (int delay) {
 	for (int i = 0; i<delay; i++){
-		_delay_us(1);
+		_delay_ms(1);
 	}
 }
-void countFreq(int timer){
-	int freqEng = TCNT2;
-	TCNT2 = 0;
+int countFreq(int timer){
+	int freqEng = timer*;
+	TCNT1 = 0;
 }
 
 
 int main(void) {
 	
 	bool temp;
-	int forDelay;
-	
+	static final int reCharge = 4;
 	PORTD |= (1 << 3)|(1 << 2);
 	DDRB = 0b00000011;
 	
@@ -55,18 +54,16 @@ int main(void) {
 		if (PIND2) {
 			temp = false;
             
-            countFreq();
-			TCNT1 = 0;  
+            freq = countFreq(TCNT1);
             
-			_delay_us_my(angle);
-			_delay_us_my(sparkDelay);
-            
-			PORTB = 0b00000010;
-			while (PIND2) {
+			_delay_ms_my(angle+sparkDelay-reCharge);    
+   			PORTB = 0b00000001;                         //Charging
+            _delay_ms(reCharge);                        //Charged
+            PORTB = 0b00000000;                         //SPARK! 
+			
+            while (PIND2) {
                 if(!temp){angle = newAngle();temp=true;};
 			}
-            
-			forDelay = TCNT1;
 		}
 		
 		if (PIND3) {
