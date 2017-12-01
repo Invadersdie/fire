@@ -9,38 +9,52 @@ void timer_init() {
 	TCCR1B |= (1 << CS12);
 	// enable overflow interrupt
 	// TIMSK1 |= (1 << TOIE1);
-	TCCR2A = 0;     // set entire TCCR1A register to 0
+    TCCR2A = 0;     // set entire TCCR1A register to 0
 	TCCR2B = 0;     // same for TCCR1B
 	TCCR2B |= (1 << CS10);
 	TCCR2B |= (1 << CS12);
-	TCNT2 = 0;
 }
 void adc0_init() {
 	// http://samou4ka.net/page/analogo-cifrovoj-preobrazovatel-mk-atmega8
-	ADMUX=0; //#PORT
-	ADCSRA=0x86; //0b10000110
+	ADMUX=0;        //#PORT
+	ADCSRA=0x86;    //0b10000110
 
 }
 int newAngle() {
 	ADCSRA |= 0x40;
-	int data = (int)(ADCW/4);
-	return data;
+	return (int)(ADCW/4);
 }
 void _delay_ms_my (int delay) {
 	for (int i = 0; i<delay; i++){
 		_delay_ms(1);
 	}
 }
-int countFreq(int timer){
-	int freqEng = timer*;
-	TCNT1 = 0;
+void _delay_us_my (int delay) {
+    for (int i = 0; i<delay; i++){
+		_delay_us(1);
+	}
 }
 
+int countFreq(int timer){
+	int freqEng = timer*8;
+	TCNT1 = 0;
+    return freqEng;
+}
+int newChargeDelay(int curFreq){
+    if      (curFreq>6000)  {return 0;}
+    else if (curFreq>5000)  {return 1;}
+    else if (curFreq>4000)  {return 2;}
+    else if (curFreq>3000)  {return 5;}
+    else if (curFreq>2000)  {return 10;}
+    else if (curFreq>1000)  {return 25;}
+    else if (curFreq>500)   {return 55;}
+    else if (curFreq>400)   {return 70;}
+    else if (curFreq>300)   {return 95;}
+}
 
 int main(void) {
 	
 	bool temp;
-	static final int reCharge = 4;
 	PORTD |= (1 << 3)|(1 << 2);
 	DDRB = 0b00000011;
 	
@@ -51,53 +65,44 @@ int main(void) {
 	
 	while (1) {
 		
-		if (PIND2) {
-			temp = false;
-            
-            freq = countFreq(TCNT1);
-            
-			_delay_ms_my(angle+sparkDelay-reCharge);    
-   			PORTB = 0b00000001;                         //Charging
-            _delay_ms(reCharge);                        //Charged
+        if (PIND2) {
+            TCNT2=0;
+            temp = true;
+            freq = countFreq(TCNT1);                    //Frequency;
+            _delay_ms_my(angle);                        //Ugol FIX;
+            _delay_us_my(sparkDelay);                   //FUOZ;
             PORTB = 0b00000000;                         //SPARK! 
 			
             while (PIND2) {
-                if(!temp){angle = newAngle();temp=true;};
-			}
-		}
-		
+                if(temp){
+                    angle = newAngle(); 
+                    chargeDelay=newChargeDelay(freq); 
+                    temp=false;
+                };
+			};
+            _delay_ms_my(chargeDelay);
+            PORTB = 0b00000010;  
+            
+        }
 		if (PIND3) {
-			temp = false;
-			TCNT1 = 0; //#Timer ON
-			_delay_us_my(angle);
-			_delay_us_my(sparkDelay);
-			PORTB = 0b00000001;
-			while (PIND3) {
-				if(!temp){angle = newAngle();temp=true;};
-			}
-			forDelay = TCNT1;
-		}
-		
-		if			(forDelay > 0x0775) {sparkDelay = 204;}
-		else if (forDelay > 0x0598) {sparkDelay = 120;}
-		else if (forDelay > 0x0459) {sparkDelay = 84;}
-		else if (forDelay > 0x03BA) {sparkDelay = 60;}
-		else if (forDelay > 0x0332) {sparkDelay = 48;}
-		else if (forDelay > 0x02CC) {sparkDelay = 30;}
-		else if (forDelay > 0x027C) {sparkDelay = 24;}
-		else if (forDelay > 0x023C) {sparkDelay = 24;}
-		else if (forDelay > 0x0208) {sparkDelay = 18;}
-		else if (forDelay > 0x01DD) {sparkDelay = 12;}
-		else if (forDelay > 0x01B8) {sparkDelay = 11;}
-		else if (forDelay > 0x0199) {sparkDelay = 10;}
-		else if (forDelay > 0x017D) {sparkDelay = 8;}
-		else if (forDelay > 0x0165) {sparkDelay = 6;}
-		else if (forDelay > 0x0150) {sparkDelay = 4;}
-		else if (forDelay > 0x013E) {sparkDelay = 2;}
-		else if (forDelay > 0x012D) {sparkDelay = 1;}
-		else if (forDelay > 0x011E) {sparkDelay = 0;}
-		else sparkDelay = 0; //default value
-		
-		}                                                  /* End event loop */
-		return 0;
-	}
+            TCNT2=0;
+            temp = true;
+            freq = countFreq(TCNT1);                    //Frequency;
+            _delay_ms_my(angle);                        //Ugol FIX;
+            _delay_us_my(sparkDelay);                   //FUOZ;
+            PORTB = 0b00000000;                         //SPARK! 
+			
+            while (PIND3) {
+                if(temp){
+                    angle = newAngle(); 
+                    chargeDelay=newChargeDelay(freq); 
+                    temp=false;
+                    };
+			};
+            _delay_ms_my(chargeDelay);                  //DelayCharge
+            PORTB = 0b00000001;  
+        }
+		if (TCNT2>927С) {PORTB = 0b00000000};
+	}                                                  /* End event loop */
+return 0;
+}
